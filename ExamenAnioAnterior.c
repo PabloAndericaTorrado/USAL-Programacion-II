@@ -106,6 +106,21 @@ void mostrarRegistros(struct tipoVivienda *v, int num)
     }
 }
 
+void cargarRegistrosAleatorios(struct tipoVivienda *v, int num) {
+    srand(time(NULL)); 
+
+    for (int i = 0; i < num; i++) {
+        snprintf(v[i].idCatastro, sizeof(v[i].idCatastro), "ID%02d", i + 1);
+        snprintf(v[i].propietario, sizeof(v[i].propietario), "Propietario %d", i + 1);
+        snprintf(v[i].direccion, sizeof(v[i].direccion), "Direccion %d", i + 1);
+        v[i].superficie = (float)(rand() % 100 + 50); 
+
+        for (int j = 0; j < NUM_MESES; j++) {
+            v[i].consumos[j] = (float)(rand() % 100); 
+        }
+    }
+}
+
 int main()
 {
 
