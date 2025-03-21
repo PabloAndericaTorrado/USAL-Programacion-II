@@ -5,7 +5,7 @@
 #define NUM_MESES 12
 #define NUM_VIVIENDAS 10
 
-struct tipoVivienda
+typedef struct
 {
 
     char idCatastro[21];
@@ -13,9 +13,9 @@ struct tipoVivienda
     char direccion[128];
     float superficie;
     float consumos[NUM_MESES];
-};
+} tipoVivienda;
 
-int procesarConsumos(struct tipoVivienda *viviendas, int numV,
+int procesarConsumos(tipoVivienda *viviendas, int numV,
                      float *conMedioViviendas, float *conMaxViviendas,
                      float *conMedioMeses, float *conMaxMeses)
 {
@@ -38,27 +38,19 @@ int procesarConsumos(struct tipoVivienda *viviendas, int numV,
     for (int i = 0; i < numV; i++)
     {
         media = 0.0;
+        maximo = 0.0;
+
         for (int j = 0; j < NUM_MESES; j++)
         {
             media += viviendas[i].consumos[j];
-        }
-        media = media / NUM_MESES;
-        conMedioViviendas[i] = media;
-    }
-
-    for (int i = 0; i < numV; i++)
-    {
-        maximo = 0.0;
-        for (int j = 0; j < NUM_MESES; j++)
-        {
             if (maximo < viviendas[i].consumos[j])
             {
                 maximo = viviendas[i].consumos[j];
             }
         }
+        conMedioViviendas[i] = media / NUM_MESES;
         conMaxViviendas[i] = maximo;
     }
-
     float mediaMeses, maxConsumoMes;
 
     for (int j = 0; j < NUM_MESES; j++)
@@ -69,7 +61,7 @@ int procesarConsumos(struct tipoVivienda *viviendas, int numV,
             mediaMeses += viviendas[i].consumos[j];
         }
 
-        conMedioMeses[j] = mediaMeses / NUM_MESES;
+        conMedioMeses[j] = mediaMeses / numV;
     }
 
     for (int j = 0; j < NUM_MESES; j++)
@@ -87,9 +79,9 @@ int procesarConsumos(struct tipoVivienda *viviendas, int numV,
     }
 
     return 0;
-};
+}
 
-void mostrarRegistros(struct tipoVivienda *v, int num)
+void mostrarRegistros(tipoVivienda *v, int num)
 {
     for (int i = 0; i < num; i++)
     {
@@ -106,7 +98,7 @@ void mostrarRegistros(struct tipoVivienda *v, int num)
     }
 }
 
-void cargarRegistrosAleatorios(struct tipoVivienda *v, int num)
+void cargarRegistrosAleatorios(tipoVivienda *v, int num)
 {
     srand(time(NULL));
 
@@ -127,7 +119,7 @@ void cargarRegistrosAleatorios(struct tipoVivienda *v, int num)
 int main()
 {
 
-    struct tipoVivienda viviendas[NUM_VIVIENDAS] = {
+    tipoVivienda viviendas[NUM_VIVIENDAS] = {
         {"ID1", "Propietario1", "Direccion1", 100.0, {10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0}},       // Media: 65.0
         {"ID2", "Propietario2", "Direccion2", 110.0, {15.0, 25.0, 35.0, 45.0, 55.0, 65.0, 75.0, 85.0, 95.0, 105.0, 115.0, 125.0}},       // Media: 70.0
         {"ID3", "Propietario3", "Direccion3", 120.0, {20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0, 120.0, 130.0}},      // Media: 75.0
